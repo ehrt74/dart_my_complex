@@ -1,0 +1,118 @@
+part of fft;
+
+/* argument in {-math.PI,math.PI] */
+
+class Complex {
+  static Complex ZERO = new Complex.cartesian(0,0);
+  bool _isCartesian = false;
+  double _modulus;
+  double _argument;
+  double _real;
+  double _imaginary;
+  static final double MATH2PI = 2*math.PI;
+  static final double MATHPI_2 = math.PI/2;
+
+  double get argument {
+    if (_argument==null) {
+      bool quadrant2 = _real<0 && _imaginary>=0;
+      bool quadrant3 = _real<0 && _imaginary<0;
+      bool quadrant4 = _real>=0 && _imaginary<0;
+      if (_imaginary==0.0)
+        _argument=0.0;
+      else if (_real==0.0) {
+        _argument=MATHPI_2;
+      } else {
+        _argument=math.atan(_imaginary/_real).abs();
+      }
+      if (quadrant2) {
+        _argument = math.PI-_argument;
+      } else if (quadrant3) {
+        _argument = -math.PI +_argument;
+      } else if (quadrant4) {
+        _argument = - _argument;
+      }
+    }
+    return _argument;
+  }
+
+  double get modulus {
+    if (_modulus==null) {
+      var real_imaginary = _real + _imaginary;
+      var realimaginary = _real * _imaginary;
+      _modulus = math.sqrt(real_imaginary*real_imaginary - 2*realimaginary);
+    }
+    return _modulus;
+  }
+
+  double get real {
+    if (_real==null) {
+      _real= _modulus*math.cos(_argument);
+    }
+    return _real;
+  }
+
+  double get imaginary {
+    if (_imaginary ==null) {
+      _imaginary = _modulus*math.sin(_argument);
+    }
+    return _imaginary;
+  }
+
+  Complex.cartesian(num real, num imaginary) {
+    this._isCartesian=true;
+    this._real = real.toDouble();
+    this._imaginary = imaginary.toDouble();
+  }
+  
+  Complex.polar(num mod, num arg) {
+    if (mod < 0) {
+      mod = -mod;
+      arg+=math.PI;
+    }
+    this._modulus=mod.toDouble();
+    this._argument=arg.toDouble()%(MATH2PI);
+  }
+
+  Complex conjugate() {
+    if (this._isCartesian)
+      return new Complex.cartesian(this.real, -this.imaginary);
+    return new Complex.polar(this.modulus, -this.argument);
+  }
+  
+  Complex operator -(Complex other)=>new Complex.cartesian(this.real - other.real, this.imaginary-other.imaginary);
+  Complex operator /(Complex other)=>new Complex.polar(this.modulus/other.modulus, this.argument - other.argument);
+  Complex operator *(Complex other)=>new Complex.polar(this.modulus*other.modulus, this.argument + other.argument);
+  Complex operator +(Complex other)=>new Complex.cartesian(this.real+other.real, this.imaginary+other.imaginary);
+
+  String toString() {
+    if (imaginary>=0)
+      return "$real+${imaginary}i";
+    return "$real${imaginary}i";
+  }
+
+  bool _closeEnough(double d1, double d2) {
+    if (d1/d2 -1 < 0.0000000001) return true;
+    if ((d1-d2).abs<0.0000000001*d1) return true;
+    if ((d1-d2).abs<0.0000000001*d2) return true;
+    return false;
+  }
+  
+  bool operator ==(Complex other) {
+    if(this._isCartesian && other._isCartesian)
+      return this.real==other.real && this.imaginary==other.imaginary;
+    return this.modulus==other.modulus && this.argument==other.argument;
+  }
+  
+  Complex operator -() {
+    if (_isCartesian)
+      return new Complex.cartesian(-this.real, -this.imaginary);
+    return new Complex.polar(this.modulus, -this.argument);
+  } 
+  
+  Complex pow(num factor)=>new Complex.polar(math.pow(this.modulus, factor), this.argument*factor);
+  Complex inverse() => new Complex.polar(1/this.modulus, -this.argument);
+    
+
+  Complex turn(num angle)=>new Complex.polar(this.modulus, this.argument+angle);
+  Complex stretch(num factor)=>new Complex.polar(this.modulus*factor, this.argument);
+}
