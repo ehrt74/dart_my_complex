@@ -14,7 +14,7 @@ class ComplexPolar extends Complex {
 
   ComplexPolar(num modulus, num argument) : super._intern() {
     if (modulus < 0) {
-      argument += math.PI;
+      argument += math.pi;
       modulus *= -1;
     }
     this._modulus = modulus;
@@ -35,7 +35,7 @@ class ComplexPolar extends Complex {
   double get real => _real ??= this.modulus * math.cos(this.argument);
 
   Complex operator -() =>
-      new ComplexPolar(this.modulus, this.argument + math.PI);
+      new ComplexPolar(this.modulus, this.argument + math.pi);
 
   Complex operator +(Complex other) =>
       other._addComplexCartesian(new ComplexCartesian.fromComplexPolar(this));

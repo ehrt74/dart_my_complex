@@ -45,8 +45,8 @@ abstract class Complex {
   Complex turn(num angle);
   Complex stretch(num factor);
 
-  static final double _MATH2PI = 2*math.PI;
-  static final double _MATHPI_2 = math.PI/2;
+  static final double _MATH2PI = 2*math.pi;
+  static final double _MATHPI_2 = math.pi/2;
 
   num get _mod2;
   bool _similarComplexPolar(ComplexPolar other);

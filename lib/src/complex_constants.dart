@@ -88,7 +88,7 @@ class ComplexMinusOne extends ComplexConstant {
   static ComplexMinusOne _singleton = new ComplexMinusOne._intern();
 
   factory ComplexMinusOne()=>_singleton;
-  ComplexMinusOne._intern():super._intern(-1, 0, 1, math.PI);
+  ComplexMinusOne._intern():super._intern(-1, 0, 1, math.pi);
 
   Complex operator -()=>new ComplexOne();
   Complex get conjugate => this;
@@ -115,7 +115,7 @@ class ComplexReal extends ComplexConstant {
 class ComplexI extends ComplexConstant {
   static ComplexI _singleton = new ComplexI._intern();
   factory ComplexI() => _singleton;
-  ComplexI._intern():super._intern(0,1,1, math.PI/2);
+  ComplexI._intern():super._intern(0,1,1, math.pi/2);
 
   Complex operator -()=>new ComplexMinusI();
   Complex get conjugate => new ComplexMinusI();

@@ -17,3 +17,7 @@
 
 - Learned how to add documentation so that it appears on the pub
 - renamed "equal" to "similar"
+
+## 0.1.0
+
+- compatibility with dart2

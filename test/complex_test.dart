@@ -184,7 +184,7 @@ void main() {
     var ct = c.clone();
     var ct2 = c.clone();
     for (int i=0; i<4; i++) {
-      ct = c.turn(math.PI/2);
+      ct = c.turn(math.pi/2);
       ct2 = c * Complex.I;
       expect(ct.similar(ct2), equals(true));
     }
